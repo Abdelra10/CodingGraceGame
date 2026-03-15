@@ -38,6 +38,8 @@ import random
 # We use math.isclose() to safely compare floating-point sums (see rps()).
 import math
 
+from jinja2.lexer import float_re
+
 
 # ---------------------------------------------------------------------------
 # CUSTOM EXCEPTION FOR GAME-ENDING EVENTS
@@ -441,6 +443,52 @@ def green_magic_room(player_info_arg):
         return "flee"
 
 
+## ASCII art (optional but encouraged)
+def print_black():
+    print()
+    print(r"    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░")
+    print(r"    ░                              ░")
+    print(r"    ░    .        .       .         ░")
+    print(r"    ░                               ░")
+    print(r"    ░          * (o_o) *             ░")
+    print(r"    ░   .       * ) ( *       .      ░")
+    print(r"    ░            * * *               ░")
+    print(r"    ░     .        .       .       ░")
+    print(r"    ░                              ░")
+    print(r"    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░")
+    print()
+
+def black_room(player_info_arg):
+    """Black Room: a dark mysterious room where answering a riddle restores your health."""
+    print_black()
+    ## Announce the room
+    print("\nYou have entered the Black Room.")
+    ## Update the player state
+    player_info_arg["location"] = "Black Room"
+    damage_or_healing = 20  # positive = heal, negative = damage
+    player_info_arg["health"] += damage_or_healing
+    item = "Shadow Cloak"
+    if item not in player_info_arg["inventory"]:
+        player_info_arg["inventory"].append(item)
+        print(f"You found a {item}!")
+    player_info_arg["choices"].append("Black Room")
+
+    ## Display state
+    show_player_info(player_info_arg)
+    ## Room narrative and Interaction
+    print("Everything is pitch black. You can't see anything.")
+    print("A shadow creature appears and whispers:")
+    print('"The more you take, the more you leave behind. What am I?"')
+    action = input("> ").strip().lower()
+    if action == "footsteps":
+        you_won("Correct! The darkness lifts and you escape!")
+    elif "flee" in action:
+        return "flee"
+    else:
+        you_died("Wrong answer. The darkness closes in on you forever")
+    return player_info_arg
+
+
 # ===========================================================================
 # CONTROL FUNCTIONS
 # ===========================================================================
@@ -501,10 +549,8 @@ def start_new_adventure(player_info_arg):
 
     while True:
         print_new_dungeon()
-        print("You enter a room, and you see a red door to your left "
-              "and blue and green doors to your right.")
-        door_picked = input("Do you pick the red door, blue door, "
-                            "or green door? > ")
+        print("You see six doors: red, blue, green, black, white, and purple.")
+        door_picked = input("Which door do you choose? > ")
 
         # We compare only the first few characters so that inputs like
         # "red door", "blue", or "green one" all work.
@@ -516,9 +562,15 @@ def start_new_adventure(player_info_arg):
             room_result = blissful_ignorance_of_illusion_room(player_info_arg)
         elif door.startswith("green"):
             room_result = green_magic_room(player_info_arg)
+
+        elif door.startswith('black'):
+            room_result = black_room(player_info_arg)
+        elif door.startswith('white'):
+            room_result = white_room(player_info_arg)
+        elif door.startswith('purple'):
+            room_result = purple_room(player_info_arg)
         else:
-            print("Sorry, it's either 'red', 'blue', or 'green' as the "
-                  "answer. You're the weakest link, goodbye!")
+            print('Please enter one of the six door names.')
             # Continue the loop so the player can try again.
             continue
 
