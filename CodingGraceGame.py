@@ -38,8 +38,6 @@ import random
 # We use math.isclose() to safely compare floating-point sums (see rps()).
 import math
 
-from jinja2.lexer import float_re
-
 
 # ---------------------------------------------------------------------------
 # CUSTOM EXCEPTION FOR GAME-ENDING EVENTS
@@ -549,8 +547,10 @@ def start_new_adventure(player_info_arg):
 
     while True:
         print_new_dungeon()
-        print("You see six doors: red, blue, green, black, white, and purple.")
-        door_picked = input("Which door do you choose? > ")
+        print("You enter a room, and you see a red door to your left "
+              "and blue and green doors to your right.")
+        door_picked = input("Do you pick the red door, blue door, "
+                            "or green door? > ")
 
         # We compare only the first few characters so that inputs like
         # "red door", "blue", or "green one" all work.
@@ -562,7 +562,6 @@ def start_new_adventure(player_info_arg):
             room_result = blissful_ignorance_of_illusion_room(player_info_arg)
         elif door.startswith("green"):
             room_result = green_magic_room(player_info_arg)
-
         elif door.startswith('black'):
             room_result = black_room(player_info_arg)
         elif door.startswith('white'):
@@ -580,6 +579,7 @@ def start_new_adventure(player_info_arg):
             break
 
     return player_info_arg
+
 
 
 def main(player_info_main):
