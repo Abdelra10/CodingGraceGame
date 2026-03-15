@@ -486,6 +486,30 @@ def black_mystery_room(player_info_arg):
         you_died("Wrong answer. The darkness closes in on you forever")
     return player_info_arg
 
+def purple_room(player_info_arg): # <-- choose your own function name
+    """The Memory Room: echoes of the past appear before you, but only one leads to reality."""
+    print("\n=== THE MEMORY ROOM ===")
+    print("You find yourself in a sudden trance. Remnants of your childhood and even recollections of your trials here appear as moving images.")
+    print("One childhood memory stands out, a day you consider most joyous. One recent memory stands out as well, of an event most painful. A trail of lanterns divides the two.")
+    print("Do you choose to follow your happiest memory, your darkest memory, or the trail of lanterns?")
+    player_info_arg["location"] = "Memory Room"
+    player_info_arg["health"] -= 15
+    shard = "Shard of the Past"
+    if shard not in player_info_arg["inventory"]:
+        player_info_arg["inventory"].append(shard)
+        print(f"You pocket a {shard}.")
+
+    player_info_arg["choices"].append("Memory Room")
+    show_player_info(player_info_arg)
+    SAFE_DIRECTION = 'lanterns'
+    direction = input("[happiest memory | darkest memory | lanterns | flee] > ").strip().lower()
+    if direction == SAFE_DIRECTION:
+        print("You follow the lanterns beyond the joy and sorrow, and the memories begin to fade. Reality comes back into focus.")
+        return player_info_arg
+    elif "flee" in direction:
+        return "flee"
+    else:
+        you_died("The memory grows more vivid, and soon you are engulfed. It holds you fast, refusing to let go.")
 
 # ===========================================================================
 # CONTROL FUNCTIONS
