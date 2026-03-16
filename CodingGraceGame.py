@@ -486,6 +486,63 @@ def black_mystery_room(player_info_arg):
         you_died("Wrong answer. The darkness closes in on you forever")
     return player_info_arg
 
+def purple_room(player_info_arg): # <-- choose your own function name
+    """The Memory Room: echoes of the past appear before you, but only one leads to reality."""
+    print("\n=== THE MEMORY ROOM ===")
+    print("You find yourself in a sudden trance. Remnants of your childhood and even recollections of your trials here appear as moving images.")
+    print("One childhood memory stands out, a day you consider most joyous. One recent memory stands out as well, of an event most painful. A trail of lanterns divides the two.")
+    print("Do you choose to follow your happiest memory, your darkest memory, or the trail of lanterns?")
+    player_info_arg["location"] = "Memory Room"
+    player_info_arg["health"] -= 15
+    shard = "Shard of the Past"
+    if shard not in player_info_arg["inventory"]:
+        player_info_arg["inventory"].append(shard)
+        print(f"You pocket a {shard}.")
+
+    player_info_arg["choices"].append("Memory Room")
+    show_player_info(player_info_arg)
+    SAFE_DIRECTION = 'lanterns'
+    direction = input("[happiest memory | darkest memory | lanterns | flee] > ").strip().lower()
+    if direction == SAFE_DIRECTION:
+        print("You follow the lanterns beyond the joy and sorrow, and the memories begin to fade. Reality comes back into focus.")
+        return player_info_arg
+    elif "flee" in direction:
+        return "flee"
+    else:
+        you_died("The memory grows more vivid, and soon you are engulfed. It holds you fast, refusing to let go.")
+
+import random
+def brown_room(player_info_arg):
+    """A chance-based encounter with great risk and reward."""
+    print("\n=== Brown Birthday Room ===")
+    print("You enter a room that seem to be hosting a birthday party but there is only one person attending, a sad birthday boy. Behind him is a door that looks to be the exit")
+    print("You must find a way to cheer up the birthday boy.")
+
+    player_info_arg["location"] = "Brown Birthday Room"
+    player_info_arg["health"] += 6  
+
+    player_info_arg["choices"].append("Brown Birthday Room")
+    show_player_info(player_info_arg)
+
+    while True:
+        choice = input("[dance | sing] > ").strip().lower()
+        if choice == "sing":
+            outcome = random.choice(['win', 'lose', 'neutral'])
+            if outcome == "win":
+                you_won("Your singing was horrible. The birthday boy begs you to stop and leave through the exit. You pass but your singing skills need some work!")
+                return player_info_arg
+            elif outcome == "lose":
+                you_died("Your singing was amazing! However, it was too good. Now the birthday boy won't allow you to stop or leave.")
+                return player_info_arg
+            else:
+                print("Your singing was average. But you haven't cheered him up quite yet. Time to try something new")
+                continue 
+        elif choice == "dance": 
+            you_died("You slip during your dance performance. The birthday boy remains unhappy and refuses to allow you to leave.") 
+            return player_info_arg
+        else:
+            you_died("Your idea that you thought was 'creative' performs terrible. You die from embarrassment.")
+            return player_info_arg
 
 # ===========================================================================
 # CONTROL FUNCTIONS
