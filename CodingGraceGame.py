@@ -442,22 +442,9 @@ def green_magic_room(player_info_arg):
 
 
 ## ASCII art (optional but encouraged)
-def print_black():
-    print()
-    print(r"    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░")
-    print(r"    ░                              ░")
-    print(r"    ░    .        .       .         ░")
-    print(r"    ░                               ░")
-    print(r"    ░          * (o_o) *             ░")
-    print(r"    ░   .       * ) ( *       .      ░")
-    print(r"    ░            * * *               ░")
-    print(r"    ░     .        .       .       ░")
-    print(r"    ░                              ░")
-    print(r"    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░")
-    print()
 
 def black_mystery_room(player_info_arg):
-    """Black Room: a dark mysterious room where answering a riddle restores your health."""
+    """Black Room: a dark mysterious room where you answer a riddle to restore your health."""
     print_black()
     ## Announce the room
     print("\nYou have entered the Black Room.")
@@ -474,16 +461,16 @@ def black_mystery_room(player_info_arg):
     ## Display state
     show_player_info(player_info_arg)
     ## Room narrative and Interaction
-    print("Everything is pitch black. You can't see anything.")
-    print("A shadow creature appears and whispers:")
+    print("You enter a room, and you can't see anything.")
+    print("A creature appears and whispers:")
     print('"The more you take, the more you leave behind. What am I?"')
     action = input("> ").strip().lower()
     if action == "footsteps":
-        you_won("Correct! The darkness lifts and you escape!")
+        you_won("Correct! You escape!")
     elif "flee" in action:
         return "flee"
     else:
-        you_died("Wrong answer. The darkness closes in on you forever")
+        you_died("Wrong answer. You stuck here forever")
     return player_info_arg
 
 def purple_room(player_info_arg): # <-- choose your own function name
